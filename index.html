@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Messaggio Segreto</title>
+<title>Lettera</title>
 <style>
   body {
     background-color: black;
@@ -17,26 +17,49 @@
     text-align: center;
   }
   button {
+    font-size: 2rem;
     margin: 10px;
-    padding: 10px 30px;
-    font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
+  }
+  #emoji {
+    font-size: 5rem;
+    margin-top: 30px;
   }
 </style>
 </head>
 <body>
-  <div id="messaggio">Sono ancora una notte sveglio a pensarti
-E penso ai rari giorni in cui posso parlarti
-La mia lingua si assopisce e la mente si scurisce
-Citando Mannarino, son immerso in una tazza di tè
-Anche se lontanino, mi piace pensarti vicina a me
+
+<div id="messaggio">
+  Sono ancora una notte sveglio a pensarti
+E penso ai rari giorni in cui posso parlarti:
+La mia lingua si assopisce e la mente scurisce
+Citando Mannarino, son immerso in una tazza di tè.
+Anche se lontanino, mi piace pensarti vicina a me.
 Ma non prendere troppo sul serio queste smancerie
-prove di coraggio con parole più grandi delle mie
-Se vuoi, ignorale tutte: di cifrario più non ve ne è
-Resta solo una domanda: vuoi stare con me?</div>
-  <div>
-    <button>Sì</button>
-    <button>No</button>
-  </div>
+sono prove di coraggio con parole più grandi delle mie;
+se vuoi ignorale tutte, di cifrario più non ve ne è,
+resta solo una domanda: 
+    vuoi stare con me?
+</div>
+
+<div>
+  <button onclick="mostraEmoji('si')">Sì</button>
+  <button onclick="mostraEmoji('no')">No</button>
+</div>
+
+<div id="emoji"></div>
+
+<script>
+function mostraEmoji(scelta) {
+  const emojiDiv = document.getElementById('emoji');
+  if(scelta === 'si') {
+    emojiDiv.textContent = '❤️';
+  } else if(scelta === 'no') {
+    emojiDiv.textContent = '😡';
+  }
+}
+</script>
+
 </body>
 </html>
