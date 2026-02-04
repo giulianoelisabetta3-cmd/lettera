@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Messaggio Segreto</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Hai trovato il messaggio!</h1>
+  <p id="testo">Vuoi vedere il messaggio segreto?</p>
+
+  <button onclick="scegli('si')">Sì</button>
+  <button onclick="scegli('no')">No</button>
+
+  <script>
+    function scegli(risposta) {
+      if(risposta === 'si'){
+        document.getElementById('testo').innerText = `Sono ancora una notte sveglio a pensarti
+E penso ai rari giorni in cui posso parlarti
+La mia lingua si assopisce e la mente si scurisce
+Citando Mannarino, son immerso in una tazza di tè
+Anche se lontanino, mi piace pensarti vicina a me
+Ma non prendere troppo sul serio queste smancerie
+prove di coraggio con parole più grandi delle mie
+Se vuoi, ignorale tutte: di cifrario più non ve ne è
+Resta solo una domanda: vuoi stare con me?`;
+      } else {
+        document.getElementById('testo').innerText = "Hai scelto di non leggere il messaggio. Riprova se vuoi.";
+      }
+    }
+  </script>
+</body>
+</html>
