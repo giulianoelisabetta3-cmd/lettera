@@ -32,15 +32,15 @@
 
 <div id="messaggio">
   Sono ancora una notte sveglio a pensarti <br>
-E penso ai rari giorni in cui posso parlarti: <br>
-La mia lingua si assopisce e la mente scurisce <br>
-Citando Mannarino, son immerso in una tazza di tè. <br>
-Anche se lontanino, mi piace pensarti vicina a me. <br>
-Ma non prendere troppo sul serio queste smancerie <br>
-sono prove di coraggio con parole più grandi delle mie; <br>
-se vuoi ignorale tutte, di cifrario più non ve ne è, <br>
-resta solo una domanda: <br>
-    vuoi stare con me?
+  E penso ai rari giorni in cui posso parlarti: <br>
+  La mia lingua si assopisce e la mente scurisce <br>
+  Citando Mannarino, son immerso in una tazza di tè. <br>
+  Anche se lontanino, mi piace pensarti vicina a me. <br>
+  Ma non prendere troppo sul serio queste smancerie <br>
+  sono prove di coraggio con parole più grandi delle mie; <br>
+  se vuoi ignorale tutte, di cifrario più non ve ne è, <br>
+  resta solo una domanda: <br>
+  vuoi stare con me?
 </div>
 
 <div>
@@ -53,19 +53,11 @@ resta solo una domanda: <br>
 <script>
 function mostraEmoji(scelta) {
   const emojiDiv = document.getElementById('emoji');
-  emojiDiv.textContent = scelta === 'si' ? '❤️' : '😡';
-
-  // --- CONFIGURA QUI IL TUO GOOGLE FORM ---
-  const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfL8wfQU4iCMwqHEDHoYtUB6skyQ7_gpV1R1K_ItowUi9ccRg/formResponse";
-
-  // --- SOSTITUISCI GLI ENTRY ID ---
-  const data = new FormData();
-  data.append("entry.111111", scelta);            // Bottone (Sì o No)
-  data.append("entry.222222", location.href);     // Pagina (URL)
-  data.append("entry.333333", new Date().toISOString()); // Ora
-
-  // Invio silenzioso senza disturbare l'utente
-  fetch(formURL, { method: "POST", body: data }).catch(() => {});
+  if(scelta === 'si') {
+    emojiDiv.textContent = '❤️';
+  } else if(scelta === 'no') {
+    emojiDiv.textContent = '😡';
+  }
 }
 </script>
 
