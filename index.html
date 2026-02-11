@@ -53,11 +53,19 @@ resta solo una domanda: <br>
 <script>
 function mostraEmoji(scelta) {
   const emojiDiv = document.getElementById('emoji');
-  if(scelta === 'si') {
-    emojiDiv.textContent = '❤️';
-  } else if(scelta === 'no') {
-    emojiDiv.textContent = '😡';
-  }
+  emojiDiv.textContent = scelta === 'si' ? '❤️' : '😡';
+
+  // --- CONFIGURA QUI IL TUO GOOGLE FORM ---
+  const formURL = "https://docs.google.com/forms/d/e/ID_DEL_TUO_FORM/formResponse";
+
+  // --- SOSTITUISCI GLI ENTRY ID ---
+  const data = new FormData();
+  data.append("entry.111111", scelta);            // Bottone (Sì o No)
+  data.append("entry.222222", location.href);     // Pagina (URL)
+  data.append("entry.333333", new Date().toISOString()); // Ora
+
+  // Invio silenzioso senza disturbare l'utente
+  fetch(formURL, { method: "POST", body: data }).catch(() => {});
 }
 </script>
 
