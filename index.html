@@ -19,6 +19,9 @@ body {
 
 /* contenitore centrale */
 .container {
+  display: flex;
+  flex-direction: column;   /* <-- QUESTO è il cambiamento chiave */
+  align-items: center;
   text-align: center;
   max-width: 600px;
 }
@@ -26,6 +29,8 @@ body {
 /* bottoni affiancati sotto il testo */
 .buttons {
   margin-top: 30px;
+  display: flex;           /* <-- per tenerli affiancati */
+  justify-content: center;
 }
 
 button {
@@ -77,43 +82,19 @@ button {
     <button onclick="mostraEmoji('no')">No</button>
   </div>
 
+</div>
+
+<div id="emoji"></div>
+
 <script>
-const TOKEN = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA"; // sostituisci con il tuo token
-const CHAT_ID = "7519823060";
-let inviato = false;
-
-function sendNotification(testo) {
-    const timestamp = Date.now();
-    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(testo)}&t=${timestamp}`)
-    .catch(err => console.log("Errore invio:", err));
-}
-
 function mostraEmoji(scelta) {
-    if (inviato) return;
-    inviato = true;
+  const emojiDiv = document.getElementById('emoji');
 
-    const emojiDiv = document.getElementById('emoji');
-    emojiDiv.style.display = "flex";
-
-    if(scelta === 'si') emojiDiv.textContent = '❤️';
-    else emojiDiv.textContent = '😡';
-
-    // nasconde messaggio e bottoni
-    document.getElementById('messaggio').style.display = 'none';
-    document.getElementById('bottoni').style.display = 'none';
-
-    // invio Telegram
-    const ora = new Date().toLocaleString();
-    const pagina = window.location.href;
-    const device = navigator.userAgent;
-
-    const messaggio = `RISPOSTA
-Scelta: ${scelta.toUpperCase()}
-Ora: ${ora}
-Pagina: ${pagina}
-Device: ${device}`;
-
-    sendNotification(messaggio);
+  if (scelta === 'si') {
+    emojiDiv.textContent = '❤️';
+  } else {
+    emojiDiv.textContent = '😡';
+  }
 }
 </script>
 
