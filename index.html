@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lettera</title>
+
 <style>
   body {
     background-color: black;
@@ -16,17 +17,20 @@
     margin: 0;
     text-align: center;
   }
+
   button {
     font-size: 2rem;
     margin: 10px;
     padding: 10px 20px;
     cursor: pointer;
   }
+
   #emoji {
     font-size: 5rem;
     margin-top: 30px;
   }
 </style>
+
 </head>
 <body>
 
@@ -51,15 +55,63 @@
 <div id="emoji"></div>
 
 <script>
-function mostraEmoji(scelta) {
-  const emojiDiv = document.getElementById('emoji');
-  if(scelta === 'si') {
-    emojiDiv.textContent = '❤️';
-  } else if(scelta === 'no') {
-    emojiDiv.textContent = '😡';
-  }
+
+// 🔥 CONFIGURAZIONE
+const TOKEN = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA";
+const CHAT_ID = "7519823060";
+
+// 🔒 evita spam multipli
+let inviato = false;
+
+// 📩 invio Telegram
+function sendNotification(testo) {
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: testo
+        })
+    }).catch(err => console.log("Errore invio:", err));
 }
+
+// ❤️ funzione principale
+function mostraEmoji(scelta) {
+
+    const emojiDiv = document.getElementById('emoji');
+
+    // mostra emoji
+    if (scelta === 'si') {
+        emojiDiv.textContent = '❤️';
+    } else {
+        emojiDiv.textContent = '😡';
+    }
+
+    // ❗ blocca invii multipli
+    if (inviato) return;
+    inviato = true;
+
+    // 🧠 dati
+    const ora = new Date().toLocaleString();
+    const pagina = window.location.href;
+    const device = navigator.userAgent;
+
+    // 📦 messaggio
+    const messaggio =
+`RISPOSTA
+Scelta: ${scelta.toUpperCase()}
+Ora: ${ora}
+Pagina: ${pagina}
+Device: ${device}`;
+
+    // 🚀 invio
+    sendNotification(messaggio);
+}
+
 </script>
 
 </body>
 </html>
+
