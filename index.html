@@ -31,6 +31,10 @@
   }
 </style>
 
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 </head>
 <body>
 
@@ -57,27 +61,23 @@
 <script>
 
 // 🔥 CONFIGURAZIONE
-const TOKEN = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA";
+const TOKEN = "TUO_TOKEN";
 const CHAT_ID = "7519823060";
 
-// 🔒 evita spam multipli
+// blocco invii multipli
 let inviato = false;
 
-// 📩 invio Telegram
 function sendNotification(testo) {
-    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: testo
-        })
-    }).catch(err => console.log("Errore invio:", err));
+    // aggiungiamo timestamp per evitare cache
+    const timestamp = Date.now();
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(testo)}&t=${timestamp}`)
+    .then(() => {
+        // dopo invio, refresh della pagina
+        setTimeout(() => location.reload(), 500); // mezzo secondo per garantire invio
+    })
+    .catch(err => console.log("Errore invio:", err));
 }
 
-// ❤️ funzione principale
 function mostraEmoji(scelta) {
 
     const emojiDiv = document.getElementById('emoji');
@@ -89,16 +89,16 @@ function mostraEmoji(scelta) {
         emojiDiv.textContent = '😡';
     }
 
-    // ❗ blocca invii multipli
+    // blocco invii multipli
     if (inviato) return;
     inviato = true;
 
-    // 🧠 dati
+    // dati
     const ora = new Date().toLocaleString();
     const pagina = window.location.href;
     const device = navigator.userAgent;
 
-    // 📦 messaggio
+    // messaggio Telegram
     const messaggio =
 `RISPOSTA
 Scelta: ${scelta.toUpperCase()}
@@ -106,7 +106,6 @@ Ora: ${ora}
 Pagina: ${pagina}
 Device: ${device}`;
 
-    // 🚀 invio
     sendNotification(messaggio);
 }
 
@@ -114,4 +113,5 @@ Device: ${device}`;
 
 </body>
 </html>
+
 
