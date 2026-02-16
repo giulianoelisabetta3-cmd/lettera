@@ -20,16 +20,16 @@ body {
 /* contenitore centrale */
 .container {
   display: flex;
-  flex-direction: column;   /* <-- QUESTO è il cambiamento chiave */
+  flex-direction: column;
   align-items: center;
   text-align: center;
   max-width: 600px;
 }
 
-/* bottoni affiancati sotto il testo */
+/* bottoni */
 .buttons {
   margin-top: 30px;
-  display: flex;           /* <-- per tenerli affiancati */
+  display: flex;
   justify-content: center;
 }
 
@@ -40,7 +40,7 @@ button {
   cursor: pointer;
 }
 
-/* emoji fullscreen */
+/* overlay emoji fullscreen */
 #emoji {
   position: fixed;
   top: 0;
@@ -49,7 +49,7 @@ button {
   height: 100%;
   background-color: black;
 
-  display: flex;
+  display: none; /* nascosto all'inizio */
   justify-content: center;
   align-items: center;
 
@@ -68,7 +68,7 @@ button {
     Sono ancora una notte sveglio a pensarti <br>
     E penso ai rari giorni in cui posso parlarti: <br>
     La mia lingua si assopisce e la mente scurisce <br>
-    Citando Mannarino, son immerso in una tazza di tè. <br>
+    Citando Mannarino, sono immerso in una tazza di tè. <br>
     Anche se lontanino, mi piace pensarti vicina a me. <br>
     Ma non prendere troppo sul serio queste smancerie <br>
     sono prove di coraggio con parole più grandi delle mie; <br>
@@ -87,16 +87,57 @@ button {
 <div id="emoji"></div>
 
 <script>
+let cliccato = false;
+
 function mostraEmoji(scelta) {
+  if (cliccato) return; // evita doppio click
+  cliccato = true;
+
   const emojiDiv = document.getElementById('emoji');
+
+  // mostra overlay
+  emojiDiv.style.display = "flex";
 
   if (scelta === 'si') {
     emojiDiv.textContent = '❤️';
   } else {
     emojiDiv.textContent = '😡';
   }
+
+  // invia messaggio
+  inviaTelegram(scelta);
+}
+
+function inviaTelegram(scelta) {
+
+  const token = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA";
+  const chat_id = "7519823060";
+
+  const data = new Date();
+
+  const testo = 
+    "📩 Nuovo click!\n" +
+    "Scelta: " + scelta + "\n" +
+    "Data: " + data.toLocaleDateString() + "\n" +
+    "Ora: " + data.toLocaleTimeString();
+
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id: chat_id,
+      text: testo
+    })
+  })
+  .then(res => console.log("Inviato"))
+  .catch(err => console.error(err));
 }
 </script>
 
 </body>
 </html>
+
