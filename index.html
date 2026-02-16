@@ -3,141 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <title>Lettera</title>
-
 <style>
-body {
-  background-color: black;
-  color: white;
-  font-family: sans-serif;
-  margin: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* contenitore centrale */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 600px;
-}
-
-/* bottoni */
-.buttons {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-}
-
-button {
-  font-size: 2rem;
-  margin: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-/* overlay emoji fullscreen */
-#emoji {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-
-  display: none; /* nascosto all'inizio */
-  justify-content: center;
-  align-items: center;
-
-  font-size: 8rem;
-  z-index: 999;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-  <div id="messaggio">
-    Sono ancora una notte sveglio a pensarti <br>
-    E penso ai rari giorni in cui posso parlarti: <br>
-    La mia lingua si assopisce e la mente scurisce <br>
-    Citando Mannarino, sono immerso in una tazza di tè. <br>
-    Anche se lontanino, mi piace pensarti vicina a me. <br>
-    Ma non prendere troppo sul serio queste smancerie <br>
-    sono prove di coraggio con parole più grandi delle mie; <br>
-    se vuoi ignorale tutte, di cifrario più non ve ne è, <br>
-    resta solo una domanda: <br>
-    vuoi stare con me?
-  </div>
-
-  <div class="buttons">
-    <button onclick="mostraEmoji('si')">Sì</button>
-    <button onclick="mostraEmoji('no')">No</button>
-  </div>
-
-</div>
-
-<div id="emoji"></div>
-
-<script>
-let cliccato = false;
-
-function mostraEmoji(scelta) {
-  if (cliccato) return; // evita doppio click
-  cliccato = true;
-
-  const emojiDiv = document.getElementById('emoji');
-
-  // mostra overlay
-  emojiDiv.style.display = "flex";
-
-  if (scelta === 'si') {
-    emojiDiv.textContent = '❤️';
-  } else {
-    emojiDiv.textContent = '😡';
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
-  // invia messaggio
-  inviaTelegram(scelta);
+  #messaggio {
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  button {
+    font-size: 2rem;
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  #emoji {
+    font-size: 10rem; /* diventa gigante dopo click */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    z-index: 1000;
+  }
+</style>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+<div id="messaggio">
+  Sono ancora una notte sveglio a pensarti <br>
+  E penso ai rari giorni in cui posso parlarti: <br>
+  La mia lingua si assopisce e la mente scurisce <br>
+  Citando Mannarino, son immerso in una tazza di tè. <br>
+  Anche se lontanino, mi piace pensarti vicina a me. <br>
+  Ma non prendere troppo sul serio queste smancerie <br>
+  sono prove di coraggio con parole più grandi delle mie; <br>
+  se vuoi ignorale tutte, di cifrario più non ve ne è, <br>
+  resta solo una domanda: <br>
+  vuoi stare con me?
+</div>
+
+<div id="bottoni">
+  <button onclick="mostraEmoji('si')">Sì</button>
+  <button onclick="mostraEmoji('no')">No</button>
+</div>
+
+<div id="emoji" style="display:none;"></div>
+
+<script>
+const TOKEN = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA"; // sostituisci con il tuo token
+const CHAT_ID = "7519823060";
+let inviato = false;
+
+function sendNotification(testo) {
+    const timestamp = Date.now();
+    fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(testo)}&t=${timestamp}`)
+    .catch(err => console.log("Errore invio:", err));
 }
 
-function inviaTelegram(scelta) {
+function mostraEmoji(scelta) {
+    if (inviato) return;
+    inviato = true;
 
-  const token = "8262208592:AAG7njMnI65qgqv2_Wq5uShuRcvyh-qlMuA";
-  const chat_id = "7519823060";
+    const emojiDiv = document.getElementById('emoji');
+    emojiDiv.style.display = "flex";
 
-  const data = new Date();
+    if(scelta === 'si') emojiDiv.textContent = '❤️';
+    else emojiDiv.textContent = '😡';
 
-  const testo = 
-    "📩 Nuovo click!\n" +
-    "Scelta: " + scelta + "\n" +
-    "Data: " + data.toLocaleDateString() + "\n" +
-    "Ora: " + data.toLocaleTimeString();
+    // nasconde messaggio e bottoni
+    document.getElementById('messaggio').style.display = 'none';
+    document.getElementById('bottoni').style.display = 'none';
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    // invio Telegram
+    const ora = new Date().toLocaleString();
+    const pagina = window.location.href;
+    const device = navigator.userAgent;
 
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      chat_id: chat_id,
-      text: testo
-    })
-  })
-  .then(res => console.log("Inviato"))
-  .catch(err => console.error(err));
+    const messaggio = `RISPOSTA
+Scelta: ${scelta.toUpperCase()}
+Ora: ${ora}
+Pagina: ${pagina}
+Device: ${device}`;
+
+    sendNotification(messaggio);
 }
 </script>
 
 </body>
+</html>
+
 </html>
 
